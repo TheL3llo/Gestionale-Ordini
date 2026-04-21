@@ -1,39 +1,54 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const { Pool } = require('pg');
+require('dotenv').config();
 
-const dbPath = path.resolve(__dirname, 'database.sqlite');
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('Error opening database', err.message);
-    } else {
-        console.log('Connected to the SQLite database.');
-        // Enforce foreign keys
-        db.run('PRAGMA foreign_keys = ON;');
-        
-        // Setup tables
-        db.serialize(() => {
-            db.run(`CREATE TABLE IF NOT EXISTS orders (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                orderNumber TEXT NOT NULL UNIQUE,
-                trackingCode TEXT,
-                shippingStatus TEXT DEFAULT 'In preparazione',
-                createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-            )`);
-
-            db.run(`CREATE TABLE IF NOT EXISTS items (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                orderId INTEGER,
-                imagePath TEXT,
-                customText TEXT,
-                recipientName TEXT,
-                type TEXT DEFAULT 'Generico',
-                basePrice REAL DEFAULT 0,
-                profit REAL DEFAULT 0,
-                isDeliveredToRecipient BOOLEAN DEFAULT 0,
-                FOREIGN KEY(orderId) REFERENCES orders(id) ON DELETE CASCADE
-            )`);
-        });
-    }
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
 });
 
-module.exports = db;
+const initDb = async () => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS orders (
+                id SERIAL PRIMARY KEY,
+                "orderNumber" TEXT NOT NULL UNIQUE,
+                "trackingCode" TEXT,
+                "shippingStatus" TEXT DEFAULT 'In preparazione',
+                "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS items (
+                id SERIAL PRIMARY KEY,
+                "orderId" INTEGER REFERENCES orders(id) ON DELETE CASCADE,
+                "imagePath" TEXT,
+                "customText" TEXT,
+                "recipientName" TEXT,
+                type TEXT DEFAULT 'Generico',
+                "basePrice" NUMERIC DEFAULT 0,
+                profit NUMERIC DEFAULT 0,
+                "isDeliveredToRecipient" BOOLEAN DEFAULT FALSE
+            )
+        `);
+
+        await client.query('COMMIT');
+        console.log('Connected to Postgres and tables ensured.');
+    } catch (e) {
+        await client.query('ROLLBACK');
+        console.error('Error initializing database', e);
+        throw e;
+    } finally {
+        client.release();
+    }
+};
+
+// Initialize DB on module load
+initDb();
+
+module.exports = {
+    query: (text, params) => pool.query(text, params),
+    pool
+};
