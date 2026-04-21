@@ -54,10 +54,10 @@ Crea il file `backend/.env` con:
 
 ```env
 PORT=3001
-DATABASE_URL=postgresql://your_db_username:your_db_password@localhost:5432/gestionale_ordini
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
+DATABASE_URL=postgresql://YOUR_USERNAME_HERE:YOUR_PASSWORD_HERE@localhost:5432/gestionale_ordini
+CLOUDINARY_CLOUD_NAME=YOUR_CLOUD_NAME_HERE
+CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY_HERE
+CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET_HERE
 ```
 
 - **`DATABASE_URL` è obbligatoria** e il database (es. `gestionale_ordini`) deve esistere già in PostgreSQL.
