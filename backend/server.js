@@ -230,7 +230,7 @@ app.delete('/api/items/:id', async (req, res) => {
 });
 
 // SPA fallback
-app.get('*', (req, res) => {
+app.get('*any', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
