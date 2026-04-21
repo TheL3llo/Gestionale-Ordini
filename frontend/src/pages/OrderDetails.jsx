@@ -193,6 +193,18 @@ export default function OrderDetails() {
     }
   };
 
+  const deleteItem = async (itemId) => {
+    if (window.confirm("Sei sicuro di voler rimuovere questo articolo?")) {
+      try {
+        await api.deleteItem(itemId);
+        loadOrder();
+      } catch (e) {
+        console.error(e);
+        alert("Errore durante l'eliminazione dell'articolo: " + e.message);
+      }
+    }
+  };
+
   if (!order) return <div className="text-center mt-8">Caricamento...</div>;
 
   const totalBasePrice = order.items?.reduce((sum, item) => sum + (item.basePrice || 0), 0) || 0;
@@ -403,14 +415,25 @@ export default function OrderDetails() {
               </p>
             </div>
 
-            <button
-              onClick={() => setEditingItem(item)}
-              className="btn btn-secondary"
-              style={{ padding: '0.5rem 0.75rem', flexShrink: 0 }}
-              title="Modifica articolo"
-            >
-              <Pencil size={16} />
-            </button>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button
+                onClick={() => setEditingItem(item)}
+                className="btn btn-secondary"
+                style={{ padding: '0.5rem 0.75rem', flexShrink: 0 }}
+                title="Modifica articolo"
+              >
+                <Pencil size={16} />
+              </button>
+
+              <button
+                onClick={() => deleteItem(item.id)}
+                className="btn"
+                style={{ padding: '0.5rem 0.75rem', flexShrink: 0, background: 'var(--danger)' }}
+                title="Rimuovi articolo"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
 
             {order.shippingStatus === 'Consegnato' && (
               <div

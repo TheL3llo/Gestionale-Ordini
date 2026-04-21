@@ -48,7 +48,7 @@ export default function ShirtEditor() {
       navigate(`/orders/${id}`);
     } catch(e) {
       console.error(e);
-      alert("Errore durante il salvataggio");
+      alert("Errore durante il salvataggio: " + e.message);
     } finally {
       setIsSubmitting(false);
     }

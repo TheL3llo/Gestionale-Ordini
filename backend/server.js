@@ -57,7 +57,14 @@ app.get('/api/orders/:id', async (req, res) => {
 
         const itemsResult = await db.query('SELECT * FROM items WHERE "orderId" = $1', [orderId]);
         const order = orderResult.rows[0];
-        order.items = itemsResult.rows;
+        
+        // Parse numeric strings to floats for the frontend
+        order.items = itemsResult.rows.map(item => ({
+            ...item,
+            basePrice: parseFloat(item.basePrice) || 0,
+            profit: parseFloat(item.profit) || 0
+        }));
+        
         res.json(order);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -171,6 +178,7 @@ app.post('/api/orders/:id/items', upload.single('image'), async (req, res) => {
             isDeliveredToRecipient: false
         });
     } catch (err) {
+        console.error('SERVER ERROR (addItem):', err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -232,6 +240,12 @@ app.delete('/api/items/:id', async (req, res) => {
 // SPA fallback
 app.get('*any', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('GLOBAL ERROR:', err);
+    res.status(500).json({ error: err.message || 'Internal Server Error' });
 });
 
 app.listen(port, '0.0.0.0', () => {
