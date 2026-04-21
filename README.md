@@ -2,7 +2,7 @@
 
 Applicazione web full-stack per gestire ordini, articoli personalizzati e stato consegna.
 
-## Stack aggiornato
+## Stack
 
 - **Frontend:** React + Vite + React Router
 - **Backend:** Node.js + Express
@@ -54,7 +54,7 @@ Crea il file `backend/.env` con:
 
 ```env
 PORT=3001
-DATABASE_URL=postgresql://postgres:password@localhost:5432/gestionale_ordini
+DATABASE_URL=postgresql://YOUR_USERNAME:YOUR_PASSWORD@localhost:5432/gestionale_ordini
 CLOUDINARY_CLOUD_NAME=...
 CLOUDINARY_API_KEY=...
 CLOUDINARY_API_SECRET=...
