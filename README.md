@@ -127,4 +127,4 @@ Lo script esegue la build del frontend e avvia il server backend.
 
 ## Note
 
-- Al momento non sono presenti test automatici backend utilizzabili (`npm --prefix backend test` è un placeholder).
+- Al momento non sono presenti test automatici backend utilizzabili ( `npm --prefix backend test` è un placeholder ).
