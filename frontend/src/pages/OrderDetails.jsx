@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { api } from '../api';
+import { api, API_BASE_URL } from '../api';
 import {
   Check, Plus, Box, Truck, Trash2, ExternalLink,
   Pencil, RefreshCw, Upload, X, Save, Hash
@@ -16,7 +16,7 @@ function EditItemModal({ item, onClose, onSaved }) {
   const [basePrice, setBasePrice] = useState(item.basePrice ?? '');
   const [profit, setProfit] = useState(item.profit ?? '');
   const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(item.imagePath ? item.imagePath : null);
+  const [preview, setPreview] = useState(item.imagePath ? `${API_BASE_URL}${item.imagePath}` : null);
   const [saving, setSaving] = useState(false);
 
   const handleFileChange = (e) => {
@@ -382,7 +382,7 @@ export default function OrderDetails() {
         {order.items?.map(item => (
           <div key={item.id} className={`item-card ${item.isDeliveredToRecipient ? 'delivered' : ''}`}>
             {item.imagePath ? (
-              <img src={item.imagePath} alt="articolo" />
+              <img src={`${API_BASE_URL}${item.imagePath}`} alt="articolo" />
             ) : (
               <div style={{ width: 80, height: 80, background: 'rgba(255,255,255,0.1)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', color: 'var(--text-muted)', flexShrink: 0 }}>
                 No Img
