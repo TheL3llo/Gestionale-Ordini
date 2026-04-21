@@ -61,6 +61,7 @@ CLOUDINARY_API_SECRET=...
 ```
 
 > `DATABASE_URL` è obbligatoria: al primo avvio il backend crea automaticamente le tabelle (`orders`, `items`) nel database indicato.
+> Non committare mai le credenziali: il file `.env` deve restare solo in locale.
 
 ### 2) Frontend (`frontend/.env`) - per sviluppo locale
 
@@ -123,4 +124,7 @@ Lo script esegue la build del frontend e avvia il server backend.
 ### Backend
 
 - `npm --prefix backend run start`
-- `npm --prefix backend test` *(attualmente placeholder e termina con errore intenzionale)*
+
+## Note
+
+- Al momento non sono presenti test automatici backend utilizzabili (`npm --prefix backend test` è un placeholder).
