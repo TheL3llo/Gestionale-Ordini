@@ -54,7 +54,7 @@ Crea il file `backend/.env` con:
 
 ```env
 PORT=3001
-DATABASE_URL=postgresql://<USER>:<PASSWORD>@<HOST>:5432/<DATABASE_NAME>
+DATABASE_URL=postgresql://your_username:your_password@your_host:5432/your_database_name
 CLOUDINARY_CLOUD_NAME=...
 CLOUDINARY_API_KEY=...
 CLOUDINARY_API_SECRET=...
@@ -127,4 +127,4 @@ Lo script esegue la build del frontend e avvia il server backend.
 
 ## Note
 
-- Al momento non sono presenti test automatici backend utilizzabili ( `npm --prefix backend test` è un placeholder ).
+- Al momento non sono presenti test automatici backend utilizzabili (`npm --prefix backend test` è un placeholder).
