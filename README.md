@@ -6,8 +6,8 @@ Applicazione web full-stack per gestire ordini, articoli personalizzati e stato 
 
 - **Frontend:** React + Vite + React Router
 - **Backend:** Node.js + Express
-- **Database:** SQLite
-- **Upload immagini:** Multer
+- **Database:** PostgreSQL
+- **Upload immagini:** Multer + Cloudinary
 
 ## Funzionalità principali
 
@@ -22,16 +22,20 @@ Applicazione web full-stack per gestire ordini, articoli personalizzati e stato 
 ## Struttura progetto
 
 ```text
-gestionale/
-├── backend/    # API Express + SQLite
+Gestionale-Ordini/
+├── backend/    # API Express + PostgreSQL
 ├── frontend/   # Interfaccia React
 └── avvia_gestionale.bat
 ```
 
-## Requisiti
+## Prerequisiti
 
-- Node.js 18+ (consigliato)
-- npm
+Per far funzionare il gestionale servono:
+
+- **Node.js 18+**
+- **npm**
+- **PostgreSQL** attivo e raggiungibile
+- **Account Cloudinary** (necessario per upload immagini)
 
 ## Installazione
 
@@ -42,33 +46,64 @@ npm --prefix frontend install
 npm --prefix backend install
 ```
 
-## Avvio in sviluppo
+## Configurazione ambiente
 
-### 1) Frontend
+### 1) Backend (`backend/.env`)
 
-```bash
-npm --prefix frontend run dev
+Crea il file `backend/.env` con:
+
+```env
+PORT=3001
+DATABASE_URL=postgresql://YOUR_USERNAME_HERE:YOUR_PASSWORD_HERE@localhost:5432/gestionale_ordini
+CLOUDINARY_CLOUD_NAME=YOUR_CLOUD_NAME_HERE
+CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY_HERE
+CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET_HERE
 ```
 
-### 2) Backend
+- **`DATABASE_URL` è obbligatoria** e il database (es. `gestionale_ordini`) deve esistere già in PostgreSQL.
+- **Inizializzazione automatica:** al primo avvio il backend crea le tabelle (`orders`, `items`) nel database indicato.
+- **Sicurezza:** non committare mai le credenziali; il file `.env` deve restare locale e va mantenuto in `.gitignore`.
 
-In un secondo terminale:
+### 2) Frontend (`frontend/.env`) - per sviluppo locale
+
+Crea il file `frontend/.env` con:
+
+```env
+VITE_API_URL=http://localhost:3001
+```
+
+## Avvio in sviluppo (2 terminali)
+
+### Terminale 1 - Backend
 
 ```bash
-node /home/runner/work/gestionale/gestionale/backend/server.js
+cd backend
+npm start
 ```
 
 Backend disponibile su `http://localhost:3001`.
 
-## Build frontend
+### Terminale 2 - Frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
+Frontend disponibile su `http://localhost:5173` (default Vite).
+
+## Avvio unificato (build frontend + backend)
+
+Se vuoi servire il frontend direttamente dal backend:
 
 ```bash
 npm --prefix frontend run build
+npm --prefix backend run start
 ```
 
-La build viene generata in `frontend/dist` e servita dal backend.
+Poi apri `http://localhost:3001`.
 
-## Avvio “unificato” (Windows)
+## Avvio rapido su Windows
 
 È disponibile lo script:
 
@@ -76,7 +111,7 @@ La build viene generata in `frontend/dist` e servita dal backend.
 avvia_gestionale.bat
 ```
 
-Lo script esegue la build del frontend e avvia il server backend sulla porta `3001`.
+Lo script esegue la build del frontend e avvia il server backend.
 
 ## Script disponibili
 
@@ -89,5 +124,8 @@ Lo script esegue la build del frontend e avvia il server backend sulla porta `30
 
 ### Backend
 
-- `node backend/server.js`
-- `npm --prefix backend test` (attualmente placeholder)
+- `npm --prefix backend run start`
+
+## Note
+
+- Al momento non sono presenti test automatici backend utilizzabili (`npm --prefix backend test` è un placeholder).
