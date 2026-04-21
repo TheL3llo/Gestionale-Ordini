@@ -48,9 +48,9 @@ npm --prefix backend install
 
 ## Configurazione ambiente
 
-### 1) Backend (`/backend/.env`)
+### 1) Backend (`backend/.env`)
 
-Crea il file `/home/runner/work/Gestionale-Ordini/Gestionale-Ordini/backend/.env` con:
+Crea il file `backend/.env` con:
 
 ```env
 PORT=3001
@@ -62,9 +62,9 @@ CLOUDINARY_API_SECRET=...
 
 > `DATABASE_URL` è obbligatoria: al primo avvio il backend crea automaticamente le tabelle (`orders`, `items`) nel database indicato.
 
-### 2) Frontend (`/frontend/.env`) - per sviluppo locale
+### 2) Frontend (`frontend/.env`) - per sviluppo locale
 
-Crea il file `/home/runner/work/Gestionale-Ordini/Gestionale-Ordini/frontend/.env` con:
+Crea il file `frontend/.env` con:
 
 ```env
 VITE_API_URL=http://localhost:3001
@@ -75,7 +75,7 @@ VITE_API_URL=http://localhost:3001
 ### Terminale 1 - Backend
 
 ```bash
-cd /home/runner/work/Gestionale-Ordini/Gestionale-Ordini/backend
+cd backend
 npm start
 ```
 
@@ -84,7 +84,7 @@ Backend disponibile su `http://localhost:3001`.
 ### Terminale 2 - Frontend
 
 ```bash
-cd /home/runner/work/Gestionale-Ordini/Gestionale-Ordini/frontend
+cd frontend
 npm run dev
 ```
 
