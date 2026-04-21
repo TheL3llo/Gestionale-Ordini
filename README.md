@@ -54,13 +54,14 @@ Crea il file `backend/.env` con:
 
 ```env
 PORT=3001
-DATABASE_URL=postgresql://your_username:your_password@your_host:5432/your_database_name
+DATABASE_URL=postgresql://postgres:password@localhost:5432/gestionale_ordini
 CLOUDINARY_CLOUD_NAME=...
 CLOUDINARY_API_KEY=...
 CLOUDINARY_API_SECRET=...
 ```
 
-> `DATABASE_URL` è obbligatoria: al primo avvio il backend crea automaticamente le tabelle (`orders`, `items`) nel database indicato.
+> `DATABASE_URL` è obbligatoria. Il database (es. `gestionale_ordini`) deve esistere già in PostgreSQL.
+> Al primo avvio il backend crea automaticamente le tabelle (`orders`, `items`) nel database indicato.
 > Non committare mai le credenziali: il file `.env` deve restare solo in locale e va mantenuto in `.gitignore`.
 
 ### 2) Frontend (`frontend/.env`) - per sviluppo locale
