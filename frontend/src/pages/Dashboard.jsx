@@ -8,9 +8,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     loadOrders();
-    // Refresh periodically for status
-    const interval = setInterval(loadOrders, 10000);
-    return () => clearInterval(interval);
   }, []);
 
   const loadOrders = async () => {
@@ -31,8 +28,9 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-8">
+      <div className="page-header">
         <h1>Ordini Recenti</h1>
+        <Link to="/orders/new" className="btn">Nuovo Ordine</Link>
       </div>
       
       {orders.length === 0 ? (

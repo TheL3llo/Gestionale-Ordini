@@ -234,6 +234,20 @@ h1 {
   color: var(--text-muted);
 }
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 /* Badges */
 .badge {
   padding: 0.25rem 0.75rem;
@@ -360,4 +374,68 @@ h1 {
 .checkbox-wrapper.checked {
   background: var(--success);
   color: white;
+}
+
+/* Mobile / iOS Optimizations */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-header {
+    padding: 1rem;
+  }
+
+  .glass-panel {
+    padding: 1.25rem;
+  }
+
+  .grid-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .editor-container {
+    flex-direction: column;
+  }
+
+  .editor-preview {
+    height: 350px;
+  }
+
+  .item-card {
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .item-card img {
+    width: 100%;
+    height: 200px;
+  }
+
+  .item-info {
+    width: 100%;
+  }
+
+  .checkbox-wrapper {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .header-actions {
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 1rem;
+  }
 }

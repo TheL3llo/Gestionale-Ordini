@@ -6,7 +6,7 @@ import {
   Pencil, RefreshCw, Upload, X, Save, Hash
 } from 'lucide-react';
 
-const REFRESH_INTERVAL = 30; // secondi
+
 
 // ─── Modal Modifica Articolo ──────────────────────────────────────────────────
 function EditItemModal({ item, onClose, onSaved }) {
@@ -114,8 +114,7 @@ export default function OrderDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
-  const [lastUpdate, setLastUpdate] = useState(null);
-  const [countdown, setCountdown] = useState(REFRESH_INTERVAL);
+
   const [editingItem, setEditingItem] = useState(null);
 
   // Editing tracking code inline
@@ -130,8 +129,7 @@ export default function OrderDetails() {
     try {
       const data = await api.getOrder(id);
       setOrder(data);
-      setLastUpdate(new Date());
-      setCountdown(REFRESH_INTERVAL);
+
     } catch (e) {
       console.error(e);
     }
@@ -139,14 +137,6 @@ export default function OrderDetails() {
 
   useEffect(() => {
     loadOrder();
-    timerRef.current = setInterval(loadOrder, REFRESH_INTERVAL * 1000);
-    countdownRef.current = setInterval(() => {
-      setCountdown(prev => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => {
-      clearInterval(timerRef.current);
-      clearInterval(countdownRef.current);
-    };
   }, [loadOrder]);
 
   const handleDelete = async () => {
@@ -222,7 +212,7 @@ export default function OrderDetails() {
   }, {});
 
   const recipientsList = Object.values(recipientTotals || {});
-  const formatTime = (d) => d ? d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '--:--:--';
+
 
   return (
     <div>
@@ -235,7 +225,7 @@ export default function OrderDetails() {
       )}
 
       {/* ── Header ── */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="page-header">
         <div>
           <h1>Ordine #{order.orderNumber}</h1>
 
@@ -277,7 +267,7 @@ export default function OrderDetails() {
           )}
         </div>
 
-        <div className="flex gap-2" style={{ flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+        <div className="header-actions">
           <button onClick={handleDelete} className="btn" style={{ background: 'var(--danger)' }}>
             <Trash2 size={20} /> Elimina
           </button>
@@ -292,20 +282,7 @@ export default function OrderDetails() {
         <div className="glass-panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
             <h3 className="flex items-center gap-2" style={{ margin: 0 }}><Truck size={20} /> Stato Spedizione</h3>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              <RefreshCw size={13} style={{ opacity: 0.7 }} />
-              <span>Aggiornato: {formatTime(lastUpdate)}</span>
-              <span style={{
-                background: 'rgba(99,102,241,0.15)',
-                border: '1px solid rgba(99,102,241,0.3)',
-                borderRadius: 6,
-                padding: '1px 7px',
-                color: 'var(--accent-color)',
-                fontWeight: 600
-              }}>
-                prossimo: {countdown}s
-              </span>
-            </div>
+
           </div>
 
           <div className="mb-4">
